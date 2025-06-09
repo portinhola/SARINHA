@@ -1,0 +1,377 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Salgados da Sara</title>
+    <link rel="stylesheet" href="styles/main.css">
+    <link rel="stylesheet" href="styles/auth.css">
+    <link rel="stylesheet" href="styles/menu.css">
+    <link rel="stylesheet" href="styles/cart.css">
+    <link rel="stylesheet" href="styles/admin.css">
+</head>
+<body>
+    <div id="app">
+        <!-- Loading Screen -->
+        <div id="loading" class="loading">
+            <div class="spinner"></div>
+            <p>Carregando...</p>
+        </div>
+
+        <!-- Main Navigation -->
+        <nav id="navbar" class="navbar" style="display: none;">
+            <div class="nav-container">
+                <div class="nav-brand">
+                    <h1>Salgados da Sara</h1>
+                </div>
+                <div class="nav-menu">
+                    <button class="nav-btn" onclick="showPage('cardapio')">Cardápio</button>
+                    <button class="nav-btn" onclick="showPage('historico')">Histórico</button>
+                    <button class="nav-btn cart-btn" onclick="showPage('carrinho')">
+                        Carrinho <span id="cart-count" class="cart-count">0</span>
+                    </button>
+                    <button class="nav-btn logout-btn" onclick="logout()">Sair</button>
+                </div>
+            </div>
+        </nav>
+
+        <!-- Login Page -->
+        <div id="login-page" class="page auth-page">
+            <div class="auth-container">
+                <div class="auth-header">
+                    <h1>Salgados da Sara</h1>
+                    <p>Faça login para continuar</p>
+                </div>
+                <form id="login-form" class="auth-form">
+                    <div class="form-group">
+                        <label for="login-phone">Telefone</label>
+                        <input type="tel" id="login-phone" name="phone" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="login-password">Senha</label>
+                        <input type="password" id="login-password" name="password" required>
+                    </div>
+                    <button type="submit" class="btn btn-primary">Entrar</button>
+                    <div class="auth-links">
+                        <a href="#" onclick="showForgotPassword()">Esqueci minha senha</a>
+                        <a href="#" onclick="showRegister()">Não tenho conta</a>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <!-- Register Page -->
+        <div id="register-page" class="page auth-page" style="display: none;">
+            <div class="auth-container">
+                <div class="auth-header">
+                    <h1>Criar Conta</h1>
+                    <p>Preencha seus dados para continuar</p>
+                </div>
+                <form id="register-form" class="auth-form">
+                    <div class="form-group">
+                        <label for="reg-name">Nome Completo</label>
+                        <input type="text" id="reg-name" name="name" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="reg-phone">Telefone</label>
+                        <input type="tel" id="reg-phone" name="phone" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="reg-email">Email</label>
+                        <input type="email" id="reg-email" name="email" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="reg-address">Endereço</label>
+                        <input type="text" id="reg-address" name="address" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="reg-number">Número</label>
+                        <input type="text" id="reg-number" name="number" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="reg-complement">Complemento</label>
+                        <input type="text" id="reg-complement" name="complement">
+                    </div>
+                    <div class="form-group">
+                        <label for="reg-city">Cidade</label>
+                        <select id="reg-city" name="city" required>
+                            <option value="">Selecione uma cidade</option>
+                            <option value="Quinze de Novembro">Quinze de Novembro</option>
+                            <option value="Selbach">Selbach</option>
+                            <option value="Colorado">Colorado</option>
+                            <option value="Alto Alegre">Alto Alegre</option>
+                            <option value="Fortaleza dos Valos">Fortaleza dos Valos</option>
+                            <option value="Tapera">Tapera</option>
+                            <option value="Lagoa dos Três Cantos">Lagoa dos Três Cantos</option>
+                            <option value="Saldanha Marinho">Saldanha Marinho</option>
+                            <option value="Espumoso">Espumoso</option>
+                            <option value="Campos Borges">Campos Borges</option>
+                            <option value="Santa Bárbara do Sul">Santa Bárbara do Sul</option>
+                            <option value="Não-Me-Toque">Não-Me-Toque</option>
+                            <option value="Boa Vista do Cadeado">Boa Vista do Cadeado</option>
+                            <option value="Boa Vista do Incra">Boa Vista do Incra</option>
+                            <option value="Carazinho">Carazinho</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="reg-password">Senha</label>
+                        <input type="password" id="reg-password" name="password" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="reg-confirm-password">Confirmar Senha</label>
+                        <input type="password" id="reg-confirm-password" name="confirmPassword" required>
+                    </div>
+                    <button type="submit" class="btn btn-primary">Criar Conta</button>
+                    <div class="auth-links">
+                        <a href="#" onclick="showLogin()">Já tenho conta</a>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <!-- Forgot Password Page -->
+        <div id="forgot-password-page" class="page auth-page" style="display: none;">
+            <div class="auth-container">
+                <div class="auth-header">
+                    <h1>Esqueci Minha Senha</h1>
+                    <p>Digite seu telefone para recuperar a senha</p>
+                </div>
+                <form id="forgot-password-form" class="auth-form">
+                    <div class="form-group">
+                        <label for="forgot-phone">Telefone</label>
+                        <input type="tel" id="forgot-phone" name="phone" required>
+                    </div>
+                    <button type="submit" class="btn btn-primary">Recuperar Senha</button>
+                    <div class="auth-links">
+                        <a href="#" onclick="showLogin()">Voltar ao login</a>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <!-- Menu Page -->
+        <div id="cardapio-page" class="page main-page" style="display: none;">
+            <div class="menu-container">
+                <div class="menu-header">
+                    <h2>Nosso Cardápio</h2>
+                </div>
+                <div class="menu-categories">
+                    <button class="category-btn active" onclick="filterMenu('todos')">TODOS</button>
+                    <button class="category-btn" onclick="filterMenu('salgados')">SALGADOS</button>
+                    <button class="category-btn" onclick="filterMenu('sortidos')">SORTIDOS</button>
+                    <button class="category-btn" onclick="filterMenu('assados')">ASSADOS</button>
+                    <button class="category-btn" onclick="filterMenu('especiais')">ESPECIAIS</button>
+                    <button class="category-btn" onclick="filterMenu('opcionais')">OPCIONAIS</button>
+                </div>
+                <div id="menu-items" class="menu-items">
+                    <!-- Menu items will be loaded here -->
+                </div>
+            </div>
+        </div>
+
+        <!-- Cart Page -->
+        <div id="carrinho-page" class="page main-page" style="display: none;">
+            <div class="cart-container">
+                <div class="cart-header">
+                    <h2>Seu Carrinho</h2>
+                </div>
+                <div id="cart-items" class="cart-items">
+                    <!-- Cart items will be loaded here -->
+                </div>
+                <div class="cart-summary">
+                    <div class="delivery-options">
+                        <h3>Forma de Retirada</h3>
+                        <label class="radio-label">
+                            <input type="radio" name="delivery" value="pickup" checked>
+                            <span class="radio-custom"></span>
+                            Retirar no Local
+                            <small>RUA IDA BERLET 1738 B</small>
+                        </label>
+                        <label class="radio-label">
+                            <input type="radio" name="delivery" value="delivery">
+                            <span class="radio-custom"></span>
+                            Entrega (+R$ 10,00)
+                        </label>
+                    </div>
+                    <div class="cart-total">
+                        <div class="total-line">
+                            <span>Subtotal:</span>
+                            <span id="subtotal">R$ 0,00</span>
+                        </div>
+                        <div class="total-line">
+                            <span>Entrega:</span>
+                            <span id="delivery-fee">R$ 0,00</span>
+                        </div>
+                        <div class="total-line total">
+                            <span>Total:</span>
+                            <span id="total">R$ 0,00</span>
+                        </div>
+                    </div>
+                    <button id="continue-btn" class="btn btn-primary" onclick="showPayment()">Continuar</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Payment Page -->
+        <div id="payment-page" class="page main-page" style="display: none;">
+            <div class="payment-container">
+                <div class="payment-header">
+                    <h2>Forma de Pagamento</h2>
+                </div>
+                <div class="payment-methods">
+                    <label class="radio-label">
+                        <input type="radio" name="payment" value="cash" checked>
+                        <span class="radio-custom"></span>
+                        Dinheiro
+                    </label>
+                    <label class="radio-label">
+                        <input type="radio" name="payment" value="card">
+                        <span class="radio-custom"></span>
+                        Cartão Débito/Crédito
+                    </label>
+                    <label class="radio-label">
+                        <input type="radio" name="payment" value="pix">
+                        <span class="radio-custom"></span>
+                        PIX
+                    </label>
+                </div>
+                <div class="payment-actions">
+                    <button class="btn btn-secondary" onclick="showPage('carrinho')">Voltar</button>
+                    <button class="btn btn-primary" onclick="finalizeOrder()">Finalizar Pedido</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- History Page -->
+        <div id="historico-page" class="page main-page" style="display: none;">
+            <div class="history-container">
+                <div class="history-header">
+                    <h2>Histórico de Pedidos</h2>
+                </div>
+                <div id="history-items" class="history-items">
+                    <!-- History items will be loaded here -->
+                </div>
+            </div>
+        </div>
+
+        <!-- Admin Page -->
+        <div id="admin-page" class="page admin-page" style="display: none;">
+            <div class="admin-login" id="admin-login">
+                <div class="auth-container">
+                    <div class="auth-header">
+                        <h1>Painel Administrativo</h1>
+                        <p>Digite suas credenciais</p>
+                    </div>
+                    <form id="admin-login-form" class="auth-form">
+                        <div class="form-group">
+                            <label for="admin-user">Usuário</label>
+                            <input type="text" id="admin-user" name="username" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="admin-password">Senha</label>
+                            <input type="password" id="admin-password" name="password" required>
+                        </div>
+                        <button type="submit" class="btn btn-primary">Entrar</button>
+                    </form>
+                </div>
+            </div>
+            
+            <div class="admin-panel" id="admin-panel" style="display: none;">
+                <div class="admin-nav">
+                    <h2>Painel Admin</h2>
+                    <div class="admin-menu">
+                        <button class="admin-btn active" onclick="showAdminSection('pedidos')">Pedidos</button>
+                        <button class="admin-btn" onclick="showAdminSection('produtos')">Produtos</button>
+                        <button class="admin-btn" onclick="showAdminSection('administradores')">Administradores</button>
+                        <button class="admin-btn" onclick="showAdminSection('configuracoes')">Configurações</button>
+                        <button class="admin-btn logout-btn" onclick="adminLogout()">Sair</button>
+                    </div>
+                </div>
+                
+                <div class="admin-content">
+                    <div id="admin-pedidos" class="admin-section">
+                        <h3>Gerenciar Pedidos</h3>
+                        <div id="admin-orders" class="admin-orders">
+                            <!-- Orders will be loaded here -->
+                        </div>
+                    </div>
+                    
+                    <div id="admin-produtos" class="admin-section" style="display: none;">
+                        <h3>Gerenciar Produtos</h3>
+                        <button class="btn btn-primary" onclick="showAddProduct()">Adicionar Produto</button>
+                        <div id="admin-products" class="admin-products">
+                            <!-- Products will be loaded here -->
+                        </div>
+                    </div>
+                    
+                    <div id="admin-administradores" class="admin-section" style="display: none;">
+                        <h3>Gerenciar Administradores</h3>
+                        <button class="btn btn-primary" onclick="showAddAdmin()">Adicionar Administrador</button>
+                        <div id="admin-admins" class="admin-admins">
+                            <!-- Admins will be loaded here -->
+                        </div>
+                    </div>
+                    
+                    <div id="admin-configuracoes" class="admin-section" style="display: none;">
+                        <h3>Configurações</h3>
+                        <div class="config-item">
+                            <label for="delivery-price">Valor da Entrega (R$)</label>
+                            <input type="number" id="delivery-price" step="0.01" min="0">
+                            <button class="btn btn-primary" onclick="updateDeliveryPrice()">Atualizar</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Modals -->
+        <div id="quantity-modal" class="modal" style="display: none;">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h3 id="modal-item-name">Item</h3>
+                    <span class="close" onclick="closeModal()">&times;</span>
+                </div>
+                <div class="modal-body">
+                    <div class="quantity-options">
+                        <label class="radio-label">
+                            <input type="radio" name="quantity-type" value="cento" checked>
+                            <span class="radio-custom"></span>
+                            Cento - <span id="price-cento">R$ 0,00</span>
+                        </label>
+                        <label class="radio-label">
+                            <input type="radio" name="quantity-type" value="meio-cento">
+                            <span class="radio-custom"></span>
+                            Meio Cento - <span id="price-meio-cento">R$ 0,00</span>
+                        </label>
+                        <label class="radio-label">
+                            <input type="radio" name="quantity-type" value="unidade">
+                            <span class="radio-custom"></span>
+                            Unidade (mín. 10) - <span id="price-unidade">R$ 0,00</span>
+                        </label>
+                    </div>
+                    <div id="unit-quantity" class="unit-quantity" style="display: none;">
+                        <label for="unit-count">Quantidade:</label>
+                        <input type="number" id="unit-count" min="10" value="10">
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button class="btn btn-secondary" onclick="closeModal()">Cancelar</button>
+                    <button class="btn btn-primary" onclick="addToCart()">Adicionar ao Carrinho</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Success/Error Messages -->
+        <div id="message" class="message" style="display: none;"></div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="js/utils.js"></script>
+    <script src="js/api.js"></script>
+    <script src="js/auth.js"></script>
+    <script src="js/menu.js"></script>
+    <script src="js/cart.js"></script>
+    <script src="js/admin.js"></script>
+    <script src="js/app.js"></script>
+</body>
+</html>
