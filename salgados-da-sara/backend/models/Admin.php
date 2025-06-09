@@ -16,7 +16,8 @@ class Admin {
     // Create admin
     function create() {
         $query = "INSERT INTO " . $this->table_name . " 
-                  SET username=:username, password=:password, role=:role";
+                  (username, password, role) 
+                  VALUES (:username, :password, :role)";
 
         $stmt = $this->conn->prepare($query);
 

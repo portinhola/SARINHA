@@ -24,9 +24,8 @@ class Order {
     // Create order
     function create() {
         $query = "INSERT INTO " . $this->table_name . " 
-                  SET order_number=:order_number, user_id=:user_id, customer_data=:customer_data, 
-                      items=:items, subtotal=:subtotal, delivery_fee=:delivery_fee, total=:total,
-                      is_delivery=:is_delivery, payment_method=:payment_method, status=:status";
+                  (order_number, user_id, customer_data, items, subtotal, delivery_fee, total, is_delivery, payment_method, status) 
+                  VALUES (:order_number, :user_id, :customer_data, :items, :subtotal, :delivery_fee, :total, :is_delivery, :payment_method, :status)";
 
         $stmt = $this->conn->prepare($query);
 
@@ -128,13 +127,13 @@ class Order {
     // Update order status
     function updateStatus($new_status, $description = null, $rejection_reason = null) {
         $query = "UPDATE " . $this->table_name . " 
-                  SET status=:status";
+                  SET status = :status";
         
         if($rejection_reason) {
-            $query .= ", rejection_reason=:rejection_reason";
+            $query .= ", rejection_reason = :rejection_reason";
         }
         
-        $query .= " WHERE id=:id";
+        $query .= " WHERE id = :id";
 
         $stmt = $this->conn->prepare($query);
         $stmt->bindParam(":status", $new_status);
@@ -165,7 +164,8 @@ class Order {
     // Create status history entry
     private function createStatusHistory($status, $description) {
         $query = "INSERT INTO order_status_history 
-                  SET order_id=:order_id, status=:status, description=:description";
+                  (order_id, status, description) 
+                  VALUES (:order_id, :status, :description)";
 
         $stmt = $this->conn->prepare($query);
         $stmt->bindParam(":order_id", $this->id);

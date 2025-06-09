@@ -19,8 +19,8 @@ class Product {
     // Create product
     function create() {
         $query = "INSERT INTO " . $this->table_name . " 
-                  SET name=:name, price=:price, category=:category, 
-                      description=:description, is_portioned=:is_portioned, is_custom=:is_custom";
+                  (name, price, category, description, is_portioned, is_custom) 
+                  VALUES (:name, :price, :category, :description, :is_portioned, :is_custom)";
 
         $stmt = $this->conn->prepare($query);
 
@@ -88,9 +88,9 @@ class Product {
     // Update product
     function update() {
         $query = "UPDATE " . $this->table_name . " 
-                  SET name=:name, price=:price, category=:category, 
-                      description=:description, is_portioned=:is_portioned 
-                  WHERE id=:id";
+                  SET name = :name, price = :price, category = :category, 
+                      description = :description, is_portioned = :is_portioned 
+                  WHERE id = :id";
 
         $stmt = $this->conn->prepare($query);
 

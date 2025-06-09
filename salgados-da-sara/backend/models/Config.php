@@ -46,7 +46,8 @@ class Config {
         } else {
             // Insert new
             $query = "INSERT INTO " . $this->table_name . " 
-                      SET config_key = :key, config_value = :value";
+                      (config_key, config_value) 
+                      VALUES (:key, :value)";
         }
 
         $stmt = $this->conn->prepare($query);
