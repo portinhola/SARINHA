@@ -13,8 +13,16 @@ const App = {
             return;
         }
         
-        // Always show main app first (cardápio)
-        App.showMainApp();
+        // Check if user is actually logged in
+        const currentUser = Auth.getCurrentUser();
+        if (currentUser && Auth.isLoggedIn()) {
+            // User is logged in, show main app
+            App.showMainApp();
+        } else {
+            // No valid login, clear any stale data and show auth
+            Auth.logout(); // Clear any stale data
+            App.showAuthPages();
+        }
         
         Utils.setLoading(false);
     },
@@ -27,6 +35,8 @@ const App = {
         });
         document.getElementById('admin-page').style.display = 'none';
         document.getElementById('login-page').style.display = 'flex';
+        document.getElementById('register-page').style.display = 'none';
+        document.getElementById('forgot-password-page').style.display = 'none';
     },
 
     // Show main application

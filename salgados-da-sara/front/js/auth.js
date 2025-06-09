@@ -6,8 +6,25 @@ const Auth = {
     // Initialize
     init: () => {
         // Carregar usuário do localStorage (para manter sessão)
-        Auth.currentUser = Utils.storage.get('currentUser');
-        Auth.currentAdmin = Utils.storage.get('currentAdmin');
+        const storedUser = Utils.storage.get('currentUser');
+        const storedAdmin = Utils.storage.get('currentAdmin');
+        
+        // Validar se os dados armazenados são válidos
+        if (storedUser && storedUser.id && storedUser.name) {
+            Auth.currentUser = storedUser;
+        } else {
+            // Limpar dados inválidos
+            Utils.storage.remove('currentUser');
+            Auth.currentUser = null;
+        }
+        
+        if (storedAdmin && storedAdmin.id && storedAdmin.username) {
+            Auth.currentAdmin = storedAdmin;
+        } else {
+            // Limpar dados inválidos
+            Utils.storage.remove('currentAdmin');
+            Auth.currentAdmin = null;
+        }
     },
 
     // Login user
@@ -81,12 +98,12 @@ const Auth = {
 
     // Check if user is logged in
     isLoggedIn: () => {
-        return Auth.currentUser !== null;
+        return Auth.currentUser !== null && Auth.currentUser.id;
     },
 
     // Check if admin is logged in
     isAdminLoggedIn: () => {
-        return Auth.currentAdmin !== null;
+        return Auth.currentAdmin !== null && Auth.currentAdmin.id;
     },
 
     // Get current user
@@ -132,6 +149,13 @@ document.addEventListener('DOMContentLoaded', () => {
     if (registerForm) {
         registerForm.addEventListener('submit', async (e) => {
             e.preventDefault();
+            
+            // Clear previous errors
+            document.querySelectorAll('.form-group.error').forEach(group => {
+                group.classList.remove('error');
+                const errorEl = group.querySelector('.error-message');
+                if (errorEl) errorEl.remove();
+            });
             
             const formData = new FormData(registerForm);
             const userData = {
@@ -182,7 +206,7 @@ document.addEventListener('DOMContentLoaded', () => {
         // Clear errors on input
         registerForm.addEventListener('input', (e) => {
             const formGroup = e.target.closest('.form-group');
-            if (formGroup.classList.contains('error')) {
+            if (formGroup && formGroup.classList.contains('error')) {
                 formGroup.classList.remove('error');
                 const errorEl = formGroup.querySelector('.error-message');
                 if (errorEl) {
@@ -262,7 +286,7 @@ function logout() {
     Auth.logout();
     Utils.showMessage('Logout realizado com sucesso!');
     setTimeout(() => {
-        App.showMainApp(); // Volta para o cardápio
+        App.showAuthPages(); // Volta para a tela de login
     }, 1000);
 }
 
