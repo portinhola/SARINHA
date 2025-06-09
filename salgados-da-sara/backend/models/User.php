@@ -22,9 +22,8 @@ class User {
     // Create user
     function create() {
         $query = "INSERT INTO " . $this->table_name . " 
-                  SET name=:name, phone=:phone, email=:email, address=:address, 
-                      number=:number, complement=:complement, city=:city, 
-                      password=:password, is_admin=:is_admin";
+                  (name, phone, email, address, number, complement, city, password, is_admin) 
+                  VALUES (:name, :phone, :email, :address, :number, :complement, :city, :password, :is_admin)";
 
         $stmt = $this->conn->prepare($query);
 
