@@ -35,6 +35,8 @@ const Utils = {
     // Show message
     showMessage: (message, type = 'success') => {
         const messageEl = document.getElementById('message');
+        if (!messageEl) return;
+        
         messageEl.textContent = message;
         messageEl.className = `message ${type}`;
         messageEl.style.display = 'block';
@@ -128,6 +130,8 @@ const Utils = {
                 return 'Meio Cento';
             case 'unidade':
                 return `${unitCount} unidades`;
+            case 'porção':
+                return 'Porção';
             default:
                 return 'Cento';
         }
@@ -151,23 +155,15 @@ const Utils = {
         return JSON.parse(JSON.stringify(obj));
     },
 
-    // Check if user is logged in
-    isLoggedIn: () => {
-        return localStorage.getItem('currentUser') !== null;
-    },
-
-    // Get current user
-    getCurrentUser: () => {
-        return JSON.parse(localStorage.getItem('currentUser') || 'null');
-    },
-
     // Set loading state
     setLoading: (isLoading) => {
         const loadingEl = document.getElementById('loading');
-        if (isLoading) {
-            loadingEl.style.display = 'flex';
-        } else {
-            loadingEl.style.display = 'none';
+        if (loadingEl) {
+            if (isLoading) {
+                loadingEl.style.display = 'flex';
+            } else {
+                loadingEl.style.display = 'none';
+            }
         }
     },
 
@@ -183,9 +179,11 @@ const Utils = {
     storage: {
         get: (key) => {
             try {
-                return JSON.parse(localStorage.getItem(key) || 'null');
+                const item = localStorage.getItem(key);
+                return item ? JSON.parse(item) : null;
             } catch (e) {
                 console.error('Error parsing localStorage data:', e);
+                localStorage.removeItem(key); // Remove corrupted data
                 return null;
             }
         },
